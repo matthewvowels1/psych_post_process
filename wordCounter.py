@@ -1,7 +1,5 @@
 
 '''
-Takes in a diarized vtt file and counts the total no. and no. of words used by each speaker.
-
 Requires:
 python -m spacy download fr_core_news_sm
 python -m spacy download en_core_web_sm'''
@@ -13,7 +11,24 @@ import pandas as pd
 import os
 
 
-def wordcount_vtt_to_dataframe(file_path, language_code):
+def wordcount_vtt_to_dataframe(file_path: str, language_code: str) -> pd.DataFrame:
+    """
+    Counts words spoken by each speaker in a VTT file and returns the results in a DataFrame.
+
+    This function reads a VTT (Web Video Text Tracks) file, identifies dialogue lines along with
+    their corresponding speakers, counts the words for each speaker, and compiles these counts
+    into a pandas DataFrame, including a total word count.
+
+    Parameters:
+    - file_path (str): The file path to the VTT file.
+    - language_code (str): The language code ('FR' for French or 'EN' for English) to select the appropriate NLP model for word counting.
+
+    Returns:
+    - pd.DataFrame: A DataFrame containing speakers, their word counts, and a row for the total word count.
+
+    Raises:
+    - ValueError: If an unsupported language code is provided.
+    """
     # Load the appropriate NLP model based on the specified language.
     if language_code.upper() == 'FR':
         nlp = spacy.load("fr_core_news_sm")
@@ -70,7 +85,6 @@ def main():
     df.to_csv(output_filename, index=False)
 
     print(f"Summary saved to {output_filename}")
-
     print(df)
 
 
